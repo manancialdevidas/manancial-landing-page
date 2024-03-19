@@ -1,6 +1,5 @@
 import { FaInstagram, FaWhatsapp, FaEnvelope } from "react-icons/fa6";
 import LazyImage from "./lazy-image";
-// import { InstagramLogo, WhatsappLogo, Phone, EnvelopeSimple } from "phosphor-react";
 
 export function Footer() {
   // TODO: Implementar request para o banco de dados
@@ -30,7 +29,6 @@ export function Footer() {
                 <ul>
                   <li className="flex items-center">
                     <a href={`mailto:${info.email}`} className="flex items-center gap-2 hover:text-cyan-600">
-                      {/* <EnvelopeSimple weight="bold" /> */}
                       <FaEnvelope />
                       {info.email}
                     </a>
@@ -42,14 +40,12 @@ export function Footer() {
                       rel="noreferrer"
                       className="flex items-center gap-2 hover:text-cyan-600"
                     >
-                      {/* <WhatsappLogo weight="bold" /> */}
                       <FaWhatsapp />
                       {info.phoneNumber}
                     </a>
                   </li>
                   <li>
                     <a href={`https://www.instagram.com/${info.instagram}`} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-cyan-600">
-                      {/* <InstagramLogo weight="bold" />  */}
                       <FaInstagram />@{info.instagram}
                     </a>
                   </li>
