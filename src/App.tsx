@@ -3,15 +3,14 @@ import React from "react";
 import Title from "./components/Title";
 import LazyImage from "./components/lazy-image";
 
-import api, { Atividades, Equipe } from "./services/api";
-
-// import { FaMapMarkerAlt } from "react-icons/fa";
+import api, { Atividades, Equipe, Info } from "./services/api";
 
 const Carousel = React.lazy(() => import("./components/carousel"));
 
 function App() {
   const [atividades, setAtividades] = React.useState<Atividades>([]);
   const [equipe, setEquipe] = React.useState<Equipe>([]);
+  const [info, setInfo] = React.useState({} as Info);
 
   React.useEffect(() => {
     api.get("/atividades").then(response => {
@@ -20,6 +19,10 @@ function App() {
 
     api.get("/equipe").then(response => {
       setEquipe(response.data as Equipe);
+    });
+
+    api.get("/info").then(response => {
+      setInfo(response.data as Info);
     });
   }, []);
 
@@ -33,21 +36,28 @@ function App() {
             A Comunidade Terapêutica Manancial de Vidas é uma entidade sem fins lucrativos que atua no tratamento, acolhimento de pessoas com dependência química, colaborando,
             inclusive, com as entidades governamentais para o desenvolvimento de uma sociedade pacífica, ordeira e progressista.
           </p>
-          <button className="bg-cyan-500 font-bold p-2 rounded-md hover:bg-cyan-600 transition-color sm:w-40">Saiba mais</button>
+          <a
+            href={`https://www.instagram.com/${info.instagram}`}
+            target="_blank"
+            rel="noreferrer"
+            className="bg-cyan-500 font-bold p-2 rounded-md hover:bg-cyan-600 transition-color sm:w-40 text-center"
+          >
+            Saiba mais
+          </a>
         </div>
       </section>
-      <section className="bg-cyan-600 flex flex-col justify-center items-center w-full text-white py-5">
+      <section className="bg-cyan-600 flex flex-col justify-center items-center w-full text-white py-5" id="metodo">
         <div className="flex flex-col max-w-7xl w-full gap-5 px-2 sm:px-6 lg:px-8">
           <Title>Método</Title>
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-12 sm:gap-16">
             {["Reconhecimento", "Tratamento", "Reinserção"].map((el, i) => {
               const isEven = i % 2 === 0;
               return (
-                <li key={el} className={`flex flex-col items-center ${isEven ? "sm:flex-row-reverse" : "sm:flex-row"} gap-5`}>
-                  <h3 className="text-xl font-bold sm:hidden">{el}</h3>
+                <li key={el} className={`flex flex-col items-center sm:py-5  ${isEven ? "sm:flex-row-reverse" : "sm:flex-row"} gap-3`}>
+                  <h3 className="text-3xl font-bold sm:hidden">{el}</h3>
                   <LazyImage src="https://placehold.co/600x400" alt="" className="rounded-lg sm:shadow-lg  sm:w-1/2" />
-                  <div className="flex flex-col justify-between gap-2 sm:w-1/2 px-1">
-                    <h3 className="text-xl font-bold hidden sm:block">{el}</h3>
+                  <div className="flex flex-col justify-between gap-4 sm:w-1/2 px-1">
+                    <h3 className="text-3xl font-bold hidden sm:block">{el}</h3>
                     <p>
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt, purus nec lacinia aliquet, urna velit suscipit tortor, eget facilisis odio eros eget
                       lectus. Nulla tincidunt, purus nec lacinia aliquet, urna velit suscipit tortor, eget facilisis odio eros eget lectus.
@@ -65,12 +75,12 @@ function App() {
           <ul className="flex flex-col min-h-max w-full place-items-center gap-5 sm:grid sm:grid-cols-3 py-2">
             {atividades.map(el => {
               return (
-                <li className="bg-cyan-600 rounded-[20px] hover:brightness-95 w-full border h-full border-gray-200 hover:shadow-md transition-all p-5" key={el.title.toLowerCase()}>
+                <li className="bg-cyan-600 rounded-[20px] hover:brightness-95 w-full  h-full hover:shadow-md transition-all p-5" key={el.title.toLowerCase()}>
                   <a className="h-full" target="_blank" href={el.url}>
                     <Carousel className="rounded-[20px] shadow-md  w-full" autoplay={true} images={el.images} />
-                    <div className="p-2">
-                      <h3 className="text-xl font-bold text-center p-3 text-white">{el.title}</h3>
-                      <p className="text-center text-gray-100">{el.description}</p>
+                    <div className="p-2 pt-4">
+                      <h3 className="text-xl font-bold text-white">{el.title}</h3>
+                      <p className="text-gray-100">{el.description}</p>
                     </div>
                   </a>
                 </li>

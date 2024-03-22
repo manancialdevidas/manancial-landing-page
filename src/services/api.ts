@@ -71,23 +71,35 @@ const equipe = [
   },
 ];
 
+const info = {
+  email: "sac@ctmanancialdevidas.com.br",
+  phoneNumber: "(84) 99883-52676",
+  instagram: "manancialdevidasct",
+  address: "Rua José Rodrigues Pereira 10 Extremoz/RN, 59575-000",
+};
+
 type Equipe = typeof equipe;
 type Atividades = typeof atividades;
+type Info = typeof info;
 
-export type { Equipe, Atividades };
+type ApiResult = {
+  data: Atividades | Equipe | Info;
+};
+
+type routes = "/atividades" | "/equipe" | "/info";
+
+export type { Equipe, Atividades, Info };
+
+const routes = {
+  "/atividades": (): ApiResult => ({ data: atividades }),
+  "/equipe": (): ApiResult => ({ data: equipe }),
+  "/info": (): ApiResult => ({ data: info }),
+};
 
 export default {
-  get: (url: string) => {
-    return new Promise<{ data: Equipe | Atividades }>((resolve, reject) => {
-      setTimeout(() => {
-        if (url === "/equipe") {
-          resolve({ data: equipe });
-        } else if (url === "/atividades") {
-          resolve({ data: atividades });
-        } else {
-          reject(new Error("Not found"));
-        }
-      }, delayTime);
+  get: (url: routes): Promise<ApiResult> => {
+    return new Promise((resolve, reject) => {
+      routes[url] ? setTimeout(() => resolve(routes[url]()), delayTime) : reject("Route not found");
     });
   },
 };
